@@ -23,9 +23,9 @@ DT_REL = DT_ATUAL-DELTA
 DT_FILE = DT_REL.strftime('%d-%m-%Y')
 
 
-df=pd.read_excel("C:/Users/sear.castro/Desktop/2024/Orquestra/base_hinos.xlsx")
+df=pd.read_excel("base_hinos.xlsx")
 
-df_ensaio=pd.read_excel("C:/Users/sear.castro/Desktop/2024/Orquestra/ensaios.xlsx")
+df_ensaio=pd.read_excel("ensaios.xlsx")
 df_ensaio['Hoje']=date.today()
 df_ensaio['Hoje'] = pd.to_datetime(df_ensaio['Hoje'])
 df_ensaio['calc'] = df_ensaio['Ensaio']-df_ensaio['Hoje']
