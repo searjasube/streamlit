@@ -22,9 +22,11 @@ DT_REL = DT_ATUAL-DELTA
 DT_FILE = DT_REL.strftime('%d-%m-%Y')
 
 
-df=pd.read_excel("base_hinos.xlsx")
+df=pd.read_excel("./base_hinos.xlsx")
+df_ensaio=pd.read_excel("./ensaios.xlsx")
 
-df_ensaio=pd.read_excel("ensaios.xlsx")
+
+
 df_ensaio['Hoje']=date.today()
 df_ensaio['Hoje'] = pd.to_datetime(df_ensaio['Hoje'])
 df_ensaio['calc'] = df_ensaio['Ensaio']-df_ensaio['Hoje']
