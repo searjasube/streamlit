@@ -9,7 +9,6 @@ Created on Fri Mar 15 14:19:40 2024
 
 import pandas as pd
 import streamlit as st
-import plotly.express as px
 import datetime
 from datetime import date, timedelta
 import numpy as np
