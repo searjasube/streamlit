@@ -9,9 +9,33 @@ Created on Fri Mar 15 14:19:40 2024
 
 import pandas as pd
 import streamlit as st
+import plotly.express as px
 import datetime
 from datetime import date, timedelta
 import numpy as np
+from streamlit_gsheets import GSheetsConnection
+
+st.set_page_config(
+    page_title="Hinos Tocados-2024",
+    page_icon=":saxophone:",
+    layout="wide"
+    )
+
+
+url = "https://docs.google.com/spreadsheets/d/1kOjE2oi6misq0SXn0fy1DOFbMLAKDrLOY-FotMrvOZo/edit?usp=sharing"
+conn = st.experimental_connection("gsheets", type=GSheetsConnection)
+df = conn.read(spreadsheet=url)
+
+
+
+url = "https://docs.google.com/spreadsheets/d/181Xq2PiDMMZ-RdqLq0bPZHj1borxEZsYUYMVE6jopuI/edit?usp=sharing"
+conn = st.experimental_connection("gsheets", type=GSheetsConnection)
+df_ensaio = conn.read(spreadsheet=url)
+
+
+#conn = st.experimental_connection("gsheets", type=GSheetsConnection)
+#df = conn.read(spreadsheet=url, worksheet="Página1")
+
 
 
 #########CARREGA DATA#########
@@ -22,21 +46,21 @@ DT_REL = DT_ATUAL-DELTA
 DT_FILE = DT_REL.strftime('%d-%m-%Y')
 
 
-df=pd.read_excel("./base_hinos.xlsx")
-df_ensaio=pd.read_excel("./ensaios.xlsx")
+#df=pd.read_excel("C:/Users/sear.castro/Desktop/2024/Orquestra/base_hinos.xlsx")
 
-
-
+#df_ensaio=pd.read_excel("C:/Users/sear.castro/Desktop/2024/Orquestra/ensaios.xlsx")
 df_ensaio['Hoje']=date.today()
 df_ensaio['Hoje'] = pd.to_datetime(df_ensaio['Hoje'])
+df_ensaio['Ensaio'] = pd.to_datetime(df_ensaio['Ensaio'],format='%d/%m/%Y')
+
 df_ensaio['calc'] = df_ensaio['Ensaio']-df_ensaio['Hoje']
 df_ensaio['calc']=df_ensaio['calc'].dt.days
 df_ensaio['TempoEnsaio']=df_ensaio['calc']
 
-
-
 df_ensaio['Hoje']=date.today()
 df_ensaio['Hoje'] = pd.to_datetime(df_ensaio['Hoje'])
+df_ensaio['Culto'] = pd.to_datetime(df_ensaio['Culto'],format='%d/%m/%Y')
+
 df_ensaio['calc'] = df_ensaio['Culto']-df_ensaio['Hoje']
 df_ensaio['calc']=df_ensaio['calc'].dt.days
 df_ensaio['TempoCulto']=df_ensaio['calc']
@@ -46,19 +70,15 @@ df_ensaio['TempoCulto']=df_ensaio['calc']
 df['Freq'] = df.groupby('Hinos')['Hinos'].transform('count')
 df['Hoje']=date.today()
 df['Hoje'] = pd.to_datetime(df['Hoje'])
+df['Data'] = pd.to_datetime(df['Data'],format='%d/%m/%Y')
 df['Hoje']=df['Hoje']
 df['calc'] = df['Hoje']-df['Data']
 df['calc']=df['calc'].dt.days/6
 df['Tocado']= df['calc'].apply(np.floor) 
 df['Tocado']=df['Tocado'].map(str) + str(" Semana")
-
 df.drop(['Hoje','calc'], axis=1, inplace=True)
 
-st.set_page_config(
-    page_title="Hinos Tocados-2024",
-    page_icon=":saxophone:",
-    layout="wide"
-    )
+
 
 
 # ---------PAGINA PRINCIPAL ---------
